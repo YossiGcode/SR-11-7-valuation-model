@@ -7,11 +7,13 @@ __pycache__/
 .pytest_cache/
 
 # Dev artifacts
+tests/
 test_patch.py
 verify_*.py
 run_test.bat
 PATCH_VERIFICATION.md
 Cheat_Sheet
+
 
 # Claude Code session state
 .claude/
