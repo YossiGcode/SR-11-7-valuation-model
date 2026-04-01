@@ -1,0 +1,47 @@
+data_integrity:
+  valid_states: [PASS, FAIL, SKIPPED, N_A]
+  state_type: validation
+  missing:
+    default_fail_pct: 0.0
+  duplicates:
+    allow_exact_duplicates: false
+  dtypes:
+    enforce_expected_types: true
+  skip_reasons:
+    missing_expected_types: "Missing upstream dependency: expected_types"
+
+ai_audit:
+  valid_states: [PASS, FAIL, SKIPPED, N_A]
+  state_type: validation
+  extraction:
+    record_is_approximate: true
+  tolerances:
+    revenue:
+      rel_tol: 0.005
+      abs_tol: 0.01
+    discount_rate:
+      rel_tol: 0.0
+      abs_tol: 0.001
+  notes_templates:
+    approximate_fail: "Failed {variance_bps}bps variance; AI flagged claim as approximate."
+    deterministic_fail: "Verified against source truth and failed tolerance check."
+
+stress_testing:
+  valid_states: [STABLE, SENSITIVE, BREACH]
+  state_type: elasticity
+  default_bands:
+    stable_max_pct: 5.0
+    sensitive_max_pct: 15.0
+  assumption_limits:
+    free_cash_flow:
+      stable_max_pct: 5.0
+      sensitive_max_pct: 15.0
+    growth_rate:
+      stable_max_pct: 5.0
+      sensitive_max_pct: 15.0
+    discount_rate:
+      stable_max_pct: 5.0
+      sensitive_max_pct: 20.0
+    terminal_growth_rate:
+      stable_max_pct: 5.0
+      sensitive_max_pct: 15.0

@@ -1,0 +1,26 @@
+# Virtual environment
+.venv/
+
+# Python artifacts
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Dev artifacts
+test_patch.py
+verify_*.py
+run_test.bat
+PATCH_VERIFICATION.md
+Cheat_Sheet
+
+# Claude Code session state
+.claude/
+CLAUDE.md
+
+# Generated artifacts
+output/
+outputs/
+*.xlsx
+
+# Environment secrets
+.env

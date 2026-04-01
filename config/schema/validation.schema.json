@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SR 11-7 Validation Config Schema",
+  "description": "Enforces structure and types for validation_config.yaml",
+  "type": "object",
+  "required": ["data_integrity", "ai_audit", "stress_testing"],
+  "additionalProperties": false,
+
+  "$defs": {
+    "tolerance_pair": {
+      "type": "object",
+      "required": ["rel_tol", "abs_tol"],
+      "additionalProperties": false,
+      "properties": {
+        "rel_tol": { "type": "number" },
+        "abs_tol": { "type": "number" }
+      }
+    },
+    "assumption_limit": {
+      "type": "object",
+      "required": ["stable_max_pct", "sensitive_max_pct"],
+      "additionalProperties": false,
+      "properties": {
+        "stable_max_pct":    { "type": "number" },
+        "sensitive_max_pct": { "type": "number" }
+      }
+    }
+  },
+
+  "properties": {
+    "data_integrity": {
+      "type": "object",
+      "required": ["valid_states", "state_type", "missing", "duplicates", "dtypes", "skip_reasons"],
+      "additionalProperties": false,
+      "properties": {
+        "valid_states": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "state_type": {
+          "type": "string",
+          "const": "validation"
+        },
+        "missing": {
+          "type": "object",
+          "required": ["default_fail_pct"],
+          "additionalProperties": false,
+          "properties": {
+            "default_fail_pct": { "type": "number" }
+          }
+        },
+        "duplicates": {
+          "type": "object",
+          "required": ["allow_exact_duplicates"],
+          "additionalProperties": false,
+          "properties": {
+            "allow_exact_duplicates": { "type": "boolean" }
+          }
+        },
+        "dtypes": {
+          "type": "object",
+          "required": ["enforce_expected_types"],
+          "additionalProperties": false,
+          "properties": {
+            "enforce_expected_types": { "type": "boolean" }
+          }
+        },
+        "skip_reasons": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+
+    "ai_audit": {
+      "type": "object",
+      "required": ["valid_states", "state_type", "extraction", "tolerances", "notes_templates"],
+      "additionalProperties": false,
+      "properties": {
+        "valid_states": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "state_type": {
+          "type": "string",
+          "const": "validation"
+        },
+        "extraction": {
+          "type": "object",
+          "required": ["record_is_approximate"],
+          "additionalProperties": false,
+          "properties": {
+            "record_is_approximate": { "type": "boolean" }
+          }
+        },
+        "tolerances": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/tolerance_pair" }
+        },
+        "notes_templates": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+
+    "stress_testing": {
+      "type": "object",
+      "required": ["valid_states", "state_type", "default_bands", "assumption_limits"],
+      "additionalProperties": false,
+      "properties": {
+        "valid_states": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "state_type": {
+          "type": "string",
+          "const": "elasticity"
+        },
+        "default_bands": { "$ref": "#/$defs/assumption_limit" },
+        "assumption_limits": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/assumption_limit" }
+        }
+      }
+    }
+  }
+}
